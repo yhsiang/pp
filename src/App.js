@@ -274,7 +274,7 @@ class App extends Component {
                 shared: false,
                 y: {
                   formatter: function (val) {
-                    return (val / 1000000).toFixed(0)
+                    return val.toFixed(0)
                   }
                 }
               }
