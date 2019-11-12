@@ -14,7 +14,7 @@ function formatMaiCoin(str) {
 
   const strs = str.split('.');
   const deciaml = Number('0.' + strs[1]).toFixed(2);
-  return (strs[0] + '.' + deciaml.split('.')[1]).replace('NT$', 'NT$ ').replace(',', ', ');
+  return (strs[0] + '.' + (deciaml.split('.')[1] || '0')).replace('NT$', 'NT$ ').replace(',', ', ');
 }
 
 function formatBitoEX(str) {
