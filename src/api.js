@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://api.bitprice.cheap/price';
+const BASE_URL = 'https://api.bitprice.cheap/price';
 
 export const getPrice = async () => {
   const response = await axios.get(`${BASE_URL}`);
