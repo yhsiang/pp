@@ -5,9 +5,8 @@ import {
   View,
   Platform,
 } from 'react-native';
-import Chart from 'react-apexcharts'
 import IconWin from './IconWin';
-import { getBitoEXPrice, getMaiCoinPrice, getBitoEXHistory, getMaiCoinHistory } from './api';
+import { getPrice } from './api';
 
 function formatMaiCoin(str) {
   if (str === '') return str;
@@ -53,49 +52,40 @@ class App extends Component {
     },
   };
 
-  getPrice = () => {
-    Promise.all([
-      getBitoEXPrice(),
-      getMaiCoinPrice('btc'),
-      getMaiCoinPrice('eth'),
-      getMaiCoinPrice('ltc'),
-      getMaiCoinPrice('usdt'),
-      getBitoEXHistory('btc'),
-      getMaiCoinHistory('btc'),
-    ]).then(([bito, mbtc, meth, mltc, musdt, bitoHistorybtc, mHistorybtc])=> {
+  getData = () => {
+    getPrice().then(price => {
+      const { bitoex, maicoin } = price;
       this.setState({
         bitoex: {
           btc: {
-            buy: bito.BTC[0],
-            sell: bito.BTC[1],
-            history: bitoHistorybtc,
+            buy: bitoex.BTC[0],
+            sell: bitoex.BTC[1],
           },
           eth: {
-            buy: bito.ETH[0],
-            sell: bito.ETH[1]
+            buy: bitoex.ETH[0],
+            sell: bitoex.ETH[1]
           },
           usdt: {
-            buy: bito.USDT[0],
-            sell: bito.USDT[1]
+            buy: bitoex.USDT[0],
+            sell: bitoex.USDT[1]
           },
         },
         maicoin: {
           btc: {
-            buy: mbtc.formatted_buy_price_in_twd,
-            sell: mbtc.formatted_sell_price_in_twd,
-            history: mHistorybtc,
+            buy: maicoin.BTC.formatted_buy_price_in_twd,
+            sell: maicoin.BTC.formatted_sell_price_in_twd,
           },
           eth:{
-            buy: meth.formatted_buy_price_in_twd,
-            sell: meth.formatted_sell_price_in_twd,
+            buy: maicoin.ETH.formatted_buy_price_in_twd,
+            sell: maicoin.ETH.formatted_sell_price_in_twd,
           },
           ltc: {
-            buy: mltc.formatted_buy_price_in_twd,
-            sell: mltc.formatted_sell_price_in_twd,
+            buy: maicoin.LTC.formatted_buy_price_in_twd,
+            sell: maicoin.LTC.formatted_sell_price_in_twd,
           },
           usdt: {
-            buy: musdt.formatted_buy_price_in_twd,
-            sell: musdt.formatted_sell_price_in_twd,
+            buy: maicoin.USDT.formatted_buy_price_in_twd,
+            sell: maicoin.USDT.formatted_sell_price_in_twd,
           },
         },
       })
@@ -103,9 +93,9 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.getPrice();
+    this.getData();
     setInterval(() => {
-      this.getPrice();
+      this.getData();
     }, 60*1000)
   }
 
@@ -125,10 +115,12 @@ class App extends Component {
               </View>
               <View>
                 <View style={styles.row}>
+                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Buy</Text>
                   <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatMaiCoin(this.state.maicoin.btc.buy)}</Text>
                   { compareBuy(this.state.maicoin.btc.buy, this.state.bitoex.btc.buy) && <IconWin size={40} color="yellow" /> }
                 </View>
                 <View style={styles.row}>
+                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Sell</Text>
                   <Text style={styles.blockPriceText}>{formatMaiCoin(this.state.maicoin.btc.sell)}</Text>
                   { compareSell(this.state.maicoin.btc.sell, this.state.bitoex.btc.sell) && <IconWin size={40} color="yellow" /> }
                 </View>
@@ -141,10 +133,12 @@ class App extends Component {
               </View>
               <View>
                 <View style={styles.row}>
+                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Buy</Text>
                   <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatMaiCoin(this.state.maicoin.eth.buy)}</Text>
                   { compareBuy(this.state.maicoin.eth.buy, this.state.bitoex.eth.buy) && <IconWin size={40} color="yellow" /> }
                 </View>
                 <View style={styles.row}>
+                <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Sell</Text>
                   <Text style={styles.blockPriceText}>{formatMaiCoin(this.state.maicoin.eth.sell)}</Text>
                   { compareSell(this.state.maicoin.eth.sell, this.state.bitoex.eth.sell) && <IconWin size={40} color="yellow" /> }
                 </View>
@@ -158,10 +152,12 @@ class App extends Component {
               </View>
               <View>
                 <View style={styles.row}>
+                <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Buy</Text>
                   <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatMaiCoin(this.state.maicoin.usdt.buy)}</Text>
                   { compareBuy(this.state.maicoin.usdt.buy, this.state.bitoex.usdt.buy) && <IconWin size={40} color="yellow" /> }
                 </View>
                 <View style={styles.row}>
+                <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Sell</Text>
                   <Text style={styles.blockPriceText}>{formatMaiCoin(this.state.maicoin.usdt.sell)}</Text>
                   { compareSell(this.state.maicoin.usdt.sell, this.state.bitoex.usdt.sell) && <IconWin size={40} color="yellow" /> }
                 </View>
@@ -180,10 +176,12 @@ class App extends Component {
               </View>
               <View>
                 <View style={styles.row}>
+                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Buy</Text>
                   <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatBitoEX(this.state.bitoex.btc.buy)}</Text>
                   { compareBuy(this.state.bitoex.btc.buy, this.state.maicoin.btc.buy) && <IconWin size={40} color="yellow" /> }
                 </View>
                 <View style={styles.row}>
+                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Sell</Text>
                   <Text style={styles.blockPriceText}>{formatBitoEX(this.state.bitoex.btc.sell)}</Text>
                   { compareSell(this.state.bitoex.btc.sell, this.state.maicoin.btc.sell) && <IconWin size={40} color="yellow" /> }
                 </View>
@@ -196,10 +194,12 @@ class App extends Component {
               </View>
               <View>
                 <View style={styles.row}>
+                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Buy</Text>
                   <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatBitoEX(this.state.bitoex.eth.buy)}</Text>
                   { compareBuy(this.state.bitoex.eth.buy, this.state.maicoin.eth.buy) && <IconWin size={40} color="yellow" /> }
                 </View>
                 <View style={styles.row}>
+                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Sell</Text>
                   <Text style={styles.blockPriceText}>{formatBitoEX(this.state.bitoex.eth.sell)}</Text>
                   { compareSell(this.state.bitoex.eth.sell, this.state.maicoin.eth.sell) && <IconWin size={40} color="yellow" /> }
                 </View>
@@ -212,78 +212,18 @@ class App extends Component {
               </View>
               <View>
                 <View style={styles.row}>
+                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Buy</Text>
                   <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatBitoEX(this.state.bitoex.usdt.buy)}</Text>
                   { compareBuy(this.state.bitoex.usdt.buy, this.state.maicoin.usdt.buy) && <IconWin size={40} color="yellow" /> }
                 </View>
                 <View style={styles.row}>
+                <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Sell</Text>
                   <Text style={styles.blockPriceText}>{formatBitoEX(this.state.bitoex.usdt.sell)}</Text>
                   { compareSell(this.state.bitoex.usdt.sell, this.state.maicoin.usdt.sell) && <IconWin size={40} color="yellow" /> }
                 </View>
               </View>
             </View>
           </View>
-        </View>
-        {/* Charts */}
-        <View>
-          <Chart options={
-             {
-              chart: {
-                stacked: false,
-                zoom: {
-                  type: 'x',
-                  enabled: true,
-                  autoScaleYaxis: true
-                },
-                toolbar: {
-                  autoSelected: 'zoom'
-                }
-              },
-              plotOptions: {
-                line: {
-                  curve: 'smooth',
-                }
-              },
-              dataLabels: {
-                enabled: false
-              },
-
-              markers: {
-                size: 0,
-                style: 'full',
-              },
-              colors: ['#e54', '#13b9e6'],
-              title: {
-                text: '價格走勢',
-                align: 'left'
-              },
-              yaxis: {
-                labels: {
-                  formatter: function (val) {
-                    return val.toFixed(0);
-                  },
-                },
-                title: {
-                  text: 'Price'
-                },
-              },
-              xaxis: {
-                type: 'datetime',
-              },
-
-              tooltip: {
-                shared: false,
-                y: {
-                  formatter: function (val) {
-                    return val.toFixed(0)
-                  }
-                }
-              }
-            }
-          } series={[
-            { name: 'maicoin btc', data: this.state.maicoin.btc.history},
-            { name: 'bitoex btc', data: this.state.bitoex.btc.history},
-
-          ]} />
         </View>
       </>
     );
@@ -293,7 +233,7 @@ class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
+    // flexDirection: 'row',
   },
   wrapper: {
     flex: 1,
