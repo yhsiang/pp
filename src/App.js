@@ -8,12 +8,12 @@ import {
 import IconWin from './IconWin';
 import { getPrice } from './api';
 
-function formatMaiCoin(str) {
+function formatMaiCoin(str, digits) {
   if (str === '') return str;
 
   return 'NT$ ' +(new Intl.NumberFormat(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
   }).format(str)).replace(',', ', ');
 }
 
@@ -117,12 +117,12 @@ class App extends Component {
               <View>
                 <View style={styles.row}>
                   <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Buy</Text>
-                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatMaiCoin(this.state.maicoin.btc.buy)}</Text>
+                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatMaiCoin(this.state.maicoin.btc.buy, 0)}</Text>
                   { compareBuy(this.state.maicoin.btc.buy, this.state.bitoex.btc.buy) && <IconWin size={40} color="yellow" /> }
                 </View>
                 <View style={styles.row}>
                   <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Sell</Text>
-                  <Text style={styles.blockPriceText}>{formatMaiCoin(this.state.maicoin.btc.sell)}</Text>
+                  <Text style={styles.blockPriceText}>{formatMaiCoin(this.state.maicoin.btc.sell, 0)}</Text>
                   { compareSell(this.state.maicoin.btc.sell, this.state.bitoex.btc.sell) && <IconWin size={40} color="yellow" /> }
                 </View>
               </View>
@@ -135,12 +135,12 @@ class App extends Component {
               <View>
                 <View style={styles.row}>
                   <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Buy</Text>
-                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatMaiCoin(this.state.maicoin.eth.buy)}</Text>
+                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatMaiCoin(this.state.maicoin.eth.buy, 0)}</Text>
                   { compareBuy(this.state.maicoin.eth.buy, this.state.bitoex.eth.buy) && <IconWin size={40} color="yellow" /> }
                 </View>
                 <View style={styles.row}>
                 <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Sell</Text>
-                  <Text style={styles.blockPriceText}>{formatMaiCoin(this.state.maicoin.eth.sell)}</Text>
+                  <Text style={styles.blockPriceText}>{formatMaiCoin(this.state.maicoin.eth.sell, 0)}</Text>
                   { compareSell(this.state.maicoin.eth.sell, this.state.bitoex.eth.sell) && <IconWin size={40} color="yellow" /> }
                 </View>
               </View>
@@ -154,12 +154,12 @@ class App extends Component {
               <View>
                 <View style={styles.row}>
                 <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Buy</Text>
-                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatMaiCoin(this.state.maicoin.usdt.buy)}</Text>
+                  <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>{formatMaiCoin(this.state.maicoin.usdt.buy, 2)}</Text>
                   { compareBuy(this.state.maicoin.usdt.buy, this.state.bitoex.usdt.buy) && <IconWin size={40} color="yellow" /> }
                 </View>
                 <View style={styles.row}>
                 <Text style={[styles.blockPriceText, { paddingRight: 5 }]}>Sell</Text>
-                  <Text style={styles.blockPriceText}>{formatMaiCoin(this.state.maicoin.usdt.sell)}</Text>
+                  <Text style={styles.blockPriceText}>{formatMaiCoin(this.state.maicoin.usdt.sell, 2)}</Text>
                   { compareSell(this.state.maicoin.usdt.sell, this.state.bitoex.usdt.sell) && <IconWin size={40} color="yellow" /> }
                 </View>
               </View>
