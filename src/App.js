@@ -11,9 +11,10 @@ import { getPrice } from './api';
 function formatMaiCoin(str) {
   if (str === '') return str;
 
-  const strs = str.split('.');
-  const deciaml = Number('0.' + strs[1]).toFixed(2);
-  return (strs[0] + '.' + (deciaml.split('.')[1] || '0')).replace('NT$', 'NT$ ').replace(',', ', ');
+  return 'NT$ ' +(new Intl.NumberFormat(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(str)).replace(',', ', ');
 }
 
 function formatBitoEX(str) {
