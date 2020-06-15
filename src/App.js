@@ -97,7 +97,7 @@ class App extends Component {
     this.getData();
     setInterval(() => {
       this.getData();
-    }, 30*1000)
+    }, 15*1000)
   }
 
   render() {
