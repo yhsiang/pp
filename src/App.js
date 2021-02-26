@@ -14,12 +14,12 @@ function formatMaiCoin(str, digits) {
   return 'NT$ ' +(new Intl.NumberFormat(undefined, {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
-  }).format(str)).replace(',', ', ');
+  }).format(str));
 }
 
 function formatBitoEX(str) {
   if (str === '') return str;
-  return 'NT$ ' + str.replace(',', ', ');
+  return 'NT$ ' + str;
 }
 
 function compareBuy(price1, price2) {
